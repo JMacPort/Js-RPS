@@ -1,0 +1,1 @@
+Extremely basic UI for playing rock, paper, scissors. Added elements to keep track of player/computer scores and when one reaches 5 the counter resets and declares the winner. Utilized emojis with data-text to compare the values. 
