@@ -1,62 +1,93 @@
-const RPS_CHOICES = ['rock', 'paper', 'scissors']
+const RPS_CHOICES = ['Rock', 'Paper', 'Scissors']
 let playerScore = 0
 let computerScore = 0
+
+const mainContent = document.querySelector('.mainContent > h1')
+
+const newDiv = document.createElement('div')
+newDiv.setAttribute('class', 'score')
+const playerScoreSpan = document.createElement('p')
+const computerScoreSpan = document.createElement('p')
+const winner = document.createElement('p')
+
+playerScoreSpan.textContent = `Player Score: ${playerScore}`
+computerScoreSpan.textContent = `Computer Score: ${computerScore}`
+
+newDiv.appendChild(playerScoreSpan)
+newDiv.appendChild(computerScoreSpan)
+newDiv.appendChild(winner)
+mainContent.insertAdjacentElement('afterend', newDiv)
 
 function getComputerChoice() {
     return RPS_CHOICES[Math.floor(Math.random() * 3)]
 }
 
-function getPlayerChoice() {
-    let playerChoice = prompt("Choose rock, paper or scissors")
-    return playerChoice
+function getPlayerChoice(choice) {
+    return choice
 }
+
+
 
 function playRound(computerChoice, playerChoice) {
-    playerChoice = playerChoice.toLowerCase()
-    if (playerChoice == "rock") {
-        if (computerChoice == "scissors") {
-            console.log(`You win! ${playerChoice} beats ${computerChoice}`)
-            playerScore++
-        } else if (computerChoice == "paper") {
-            console.log(`You lose! ${computerChoice} beats ${playerChoice}`)
-            computerScore++
+    if (playerChoice == "Rock") {
+        if (computerChoice == "Scissors") {
+            playerWin(playerChoice, computerChoice)
+        } else if (computerChoice == "Paper") {
+            computerWin(playerChoice, computerChoice)
         } else {
-            console.log("It's a draw!")
+            winner.textContent = "It's a draw"
         }
-    } else if (playerChoice == "paper") {
-        if (computerChoice == "rock") {
-            console.log(`You win! ${playerChoice} beats ${computerChoice}`)
-            playerScore++
-        } else if (computerChoice == "scissors") {
-            console.log(`You lose! ${computerChoice} beats ${playerChoice}`)
-            computerScore++
+    } else if (playerChoice == "Paper") {
+        if (computerChoice == "Rock") {
+            playerWin(playerChoice, computerChoice)
+        } else if (computerChoice == "Scissors") {
+            computerWin(playerChoice, computerChoice)
         } else {
-            console.log("It's a draw!")
+            winner.textContent = "It's a draw"
         }
-    } else if (playerChoice == "scissors") {
-        if (computerChoice == "paper") {
-            console.log(`You win! ${playerChoice} beats ${computerChoice}`)
-            playerScore++
-        } else if (computerChoice == "rock") {
-            console.log(`You lose! ${computerChoice} beats ${playerChoice}`)
-            computerScore++
+    } else if (playerChoice == "Scissors") {
+        if (computerChoice == "Paper") {
+            playerWin(playerChoice, computerChoice)
+        } else if (computerChoice == "Rock") {
+            computerWin(playerChoice, computerChoice)
         } else {
-            console.log("It's a draw!")
+            winner.textContent = "It's a draw"
         }
+    }
+
+    if (playerScore === 5) {
+        winner.textContent = `YOU WIN! Resetting!`
+        resetScores()
+    } else if (computerScore === 5) {
+        winner.textContent = `YOU LOSE! Resetting!`
+        resetScores()
     }
 }
 
-function playGame() {
-    for (let i = 0; i < 5; i++) {
-        playRound(getComputerChoice(), getPlayerChoice())
-    }
-    if (playerScore > computerScore) {
-        console.log("You WIN!")
-    } else if (computerScore > playerScore) {
-        console.log("You LOSE!")
-    } else {
-        console.log("It's a DRAW!")
-    }
+const GAME_BUTTONS = document.querySelectorAll(".rps")
+GAME_BUTTONS.forEach(button => {
+    button.addEventListener('click', (e) => {
+        playRound(getComputerChoice(), getPlayerChoice(button.getAttribute('data-text')))
+    });
+});
+
+
+
+function resetScores() {
+    playerScore = 0;
+    computerScore = 0;
+    playerScoreSpan.textContent = `Player Score: ${playerScore}`
+    computerScoreSpan.textContent = `Computer Score: ${computerScore}`
 }
 
-playGame()
+function playerWin(playerChoice, computerChoice) {
+    playerScore++
+    playerScoreSpan.textContent = `Player Score: ${playerScore}`
+    winner.textContent = `${playerChoice} beats ${computerChoice}`
+}
+
+function computerWin(playerChoice, computerChoice) {
+    computerScore++
+    computerScoreSpan.textContent = `Computer Score: ${computerScore}`
+    winner.textContent = `${computerChoice} beats ${playerChoice}`
+}

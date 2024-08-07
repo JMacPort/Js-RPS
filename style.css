@@ -1,0 +1,26 @@
+.mainContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainContent > h1 {
+    align-self: center;
+}
+
+.score {
+    align-self: center;
+}
+ 
+.gameplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    gap: 20px;
+}
+
+button {
+    background-color: lightgoldenrodyellow;
+    padding: 15px 32px;
+    font-size: 25px;
+}
